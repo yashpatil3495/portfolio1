@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focus Flow — Case Study | Yash Patil</title>
+<meta name="description" content="Deep-dive case study of Focus Flow — a gamified productivity dashboard by Yash Patil.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Focus Flow — Case Study | Yash Patil">
+<meta property="og:description" content="Deep-dive case study of Focus Flow — a gamified productivity dashboard by Yash Patil.">
+<meta property="og:url" content="https://yashpatil3495.github.io/case-studies/case-study-focus-flow.html">
+<meta property="og:image" content="https://yashpatil3495.github.io/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Focus Flow — Case Study | Yash Patil">
+<meta name="twitter:description" content="Deep-dive case study of Focus Flow — a gamified productivity dashboard by Yash Patil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230c0a06'/><text y='72' x='50' text-anchor='middle' font-size='58' font-family='serif' font-weight='bold' fill='%23e8a832'>Y</text></svg>">
+<link rel="stylesheet" href="../css/case-study-focus-flow.css">
+</head>
+<body>
+
+<div id="read-progress"></div>
+
+<nav>
+  <a href="../index.html" class="nav-logo">YP<span>← Portfolio</span></a>
+  <div class="nav-right">
+    <a href="../index.html#work" class="nav-back">All Projects</a>
+    <a href="https://yashpatil3495.github.io/timer/" target="_blank" rel="noopener" class="nav-live">Live Demo ↗</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="cs-hero">
+  <canvas class="hero-bg-canvas" id="hero-canvas"></canvas>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-meta">
+      <span class="section-num">01 / PRODUCTIVITY</span>
+      Case Study
+    </div>
+    <span class="hero-emoji">⏱</span>
+    <h1 class="hero-title">FOCUS<br><span>FLOW</span></h1>
+    <p class="hero-subtitle">A gamified productivity dashboard that turns deep work into a rewarding, data-driven experience.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">Spotify Embed</span>
+      <span class="hero-tag">Pomodoro</span>
+      <span class="hero-tag">Task Management</span>
+      <span class="hero-tag">Data Visualization</span>
+      <span class="hero-tag">Vanilla JS</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTENT -->
+<main class="cs-content">
+
+  <!-- PROBLEM -->
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">01</span> The Problem</div>
+    <h2>DISTRACTION IS THE DEFAULT</h2>
+
+    <div class="problem-block">
+      <div class="block-label">Core Problem</div>
+      <p>Modern workers spend up to 23 minutes recovering from a single interruption. Existing productivity tools are either too rigid (timers with no context) or too gamified at the expense of actual work — and none of them feel good to use.</p>
+    </div>
+
+    <p>I noticed this personally while studying and building projects. I'd open a Pomodoro timer in one tab, my task list in another, Spotify in a third — and spend more mental energy context-switching between tools than actually doing the work.</p>
+    <p>The question I kept asking: <strong>what if a single dashboard could hold your focus state, your tasks, your music, and your progress data — all in one coherent experience?</strong></p>
+  </section>
+
+  <!-- RESEARCH -->
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">02</span> Research & Discovery</div>
+    <h2>WHAT KEEPS PEOPLE FOCUSED</h2>
+
+    <p>I studied productivity psychology — specifically the concepts of <strong>flow state</strong> (Csikszentmihalyi), the <strong>Zeigarnik Effect</strong> (unfinished tasks occupy mental RAM), and <strong>variable reward loops</strong> (why games are more engaging than to-do lists).</p>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-icon">🧠</span>
+        <div class="insight-title">Flow State</div>
+        <div class="insight-text">Peak focus requires the right balance of challenge vs. skill. Too easy = boredom. Too hard = anxiety.</div>
+      </div>
+      <div class="insight-card">
+        <span class="insight-icon">🎯</span>
+        <div class="insight-title">Clear Goals</div>
+        <div class="insight-text">People work better with visible, specific targets rather than open-ended "do more" instructions.</div>
+      </div>
+      <div class="insight-card">
+        <span class="insight-icon">🏆</span>
+        <div class="insight-title">Reward Loops</div>
+        <div class="insight-text">Small wins (streak badges, session completion) release dopamine and reinforce the behavior.</div>
+      </div>
+      <div class="insight-card">
+        <span class="insight-icon">🎵</span>
+        <div class="insight-title">Ambient Sound</div>
+        <div class="insight-text">Music with 60–70 BPM correlates with improved focus and reduced cognitive fatigue in study environments.</div>
+      </div>
+    </div>
+
+    <p>I also looked at existing tools: Notion, Forest, Be Focused, Todoist. None combined all four dimensions in a single, aesthetically unified space. Most felt like utilities, not experiences.</p>
+  </section>
+
+  <!-- DESIGN DECISIONS -->
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">03</span> Design Decisions</div>
+    <h2>HOW IT CAME TOGETHER</h2>
+    <p>Every feature in Focus Flow was a deliberate choice to reduce friction and amplify motivation. Here are the decisions that defined the product:</p>
+
+    <div class="decision-list">
+      <div class="decision-item">
+        <div class="decision-num">01</div>
+        <div>
+          <div class="decision-title">UNIFIED DASHBOARD LAYOUT</div>
+          <p class="decision-text">Rather than a full-screen timer that hides everything else, I designed a dashboard that keeps the timer, task list, and stats all visible simultaneously. This reduces the need to switch contexts mentally — you see your goal and your progress at the same time.</p>
+          <span class="decision-tag">UX Architecture</span>
+        </div>
+      </div>
+
+      <div class="decision-item">
+        <div class="decision-num">02</div>
+        <div>
+          <div class="decision-title">DRAG-AND-DROP TASK PRIORITIZATION</div>
+          <p class="decision-text">Tasks can be reordered by dragging. This forces the user to make an active decision about priority — which is itself a productivity technique. Implementing this with the HTML5 Drag & Drop API (no external libraries) kept the bundle light.</p>
+          <span class="decision-tag">Interaction Design</span>
+        </div>
+      </div>
+
+      <div class="decision-item">
+        <div class="decision-num">03</div>
+        <div>
+          <div class="decision-title">SPOTIFY EMBED INTEGRATION</div>
+          <p class="decision-text">Rather than building a music player from scratch, I embedded Spotify's IFrame API directly in the dashboard. This gives users access to their actual playlists — not canned lo-fi tracks — while requiring zero authentication flow from my side.</p>
+          <span class="decision-tag">API Integration</span>
+        </div>
+      </div>
+
+      <div class="decision-item">
+        <div class="decision-num">04</div>
+        <div>
+          <div class="decision-title">STREAK & GOAL SYSTEM</div>
+          <p class="decision-text">Completing Pomodoro sessions builds a streak. Setting and hitting daily session goals awards visual badges. This was inspired by the habit literature — the key is making the reward feel earned, not trivial. The animations on badge unlock were carefully tuned to feel satisfying.</p>
+          <span class="decision-tag">Gamification</span>
+        </div>
+      </div>
+
+      <div class="decision-item">
+        <div class="decision-num">05</div>
+        <div>
+          <div class="decision-title">PERSISTENT DATA VIA LOCALSTORAGE</div>
+          <p class="decision-text">All streaks, tasks, and session history are stored in localStorage — no backend, no account needed. This was a deliberate choice: a productivity tool that requires signup creates friction before value. Users should get value instantly.</p>
+          <span class="decision-tag">Technical Decision</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">04</span> Technical Stack</div>
+    <h2>BUILT LEAN, RUNS FAST</h2>
+    <p>Focus Flow is built entirely with vanilla web technologies — no frameworks, no build tools. This was a conscious decision: <strong>the fewer dependencies, the faster the load, the more control I have over every interaction</strong>.</p>
+    <div class="tech-grid">
+      <span class="tech-pill">HTML5</span>
+      <span class="tech-pill">CSS3 + Variables</span>
+      <span class="tech-pill">Vanilla JS (ES6+)</span>
+      <span class="tech-pill">Spotify IFrame API</span>
+      <span class="tech-pill">HTML5 Drag & Drop</span>
+      <span class="tech-pill">LocalStorage API</span>
+      <span class="tech-pill">CSS Animations</span>
+      <span class="tech-pill">Canvas API</span>
+    </div>
+    <p>The timer uses <code style="font-family:var(--font-mono);color:var(--amber);font-size:0.9em;">setInterval</code> with drift correction (compensating for browser throttling of inactive tabs), and all session analytics are computed client-side.</p>
+  </section>
+
+  <!-- OUTCOME -->
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">05</span> Outcome</div>
+    <h2>SHIPPED & LIVE</h2>
+
+    <div class="metrics-grid">
+      <div class="metric-cell">
+        <div class="metric-val">4+</div>
+        <div class="metric-label">Weeks of Daily Use</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val">0</div>
+        <div class="metric-label">External Dependencies</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val">100%</div>
+        <div class="metric-label">Client-Side Only</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val">&lt;2s</div>
+        <div class="metric-label">Time to Interactive</div>
+      </div>
+    </div>
+
+    <div class="cs-quote">
+      <blockquote>"The hardest part wasn't building the timer — it was designing the moment of completion. That's when users either feel rewarded or feel nothing. I spent more time on the finish animation than any other single element."</blockquote>
+      <cite>— Yash Patil, reflecting on the build</cite>
+    </div>
+
+    <p>Focus Flow is live on GitHub Pages and has become my own daily productivity environment. The project taught me that <strong>the best tools are the ones you build because you need them yourself</strong>.</p>
+  </section>
+
+  <!-- LESSONS -->
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">06</span> What I Learned</div>
+    <h2>LESSONS CARRIED FORWARD</h2>
+    <div class="lesson-list">
+      <div class="lesson-item">
+        <span class="lesson-bullet">✦</span>
+        <span class="lesson-text"><strong>Constraints breed creativity.</strong> Building without frameworks forces you to understand the platform deeply — I now have a much clearer mental model of the browser's event loop and rendering pipeline.</span>
+      </div>
+      <div class="lesson-item">
+        <span class="lesson-bullet">✦</span>
+        <span class="lesson-text"><strong>Animation budget matters.</strong> I initially had too many micro-animations firing simultaneously, which caused jank on lower-end devices. Learning to profile and batch animations was a crucial performance lesson.</span>
+      </div>
+      <div class="lesson-item">
+        <span class="lesson-bullet">✦</span>
+        <span class="lesson-text"><strong>Gamification is subtle.</strong> Heavy-handed reward systems feel hollow. The most effective elements were small — a 2px progress line filling up, a number ticking over. Restraint makes rewards feel earned.</span>
+      </div>
+      <div class="lesson-item">
+        <span class="lesson-bullet">✦</span>
+        <span class="lesson-text"><strong>Ship early, iterate.</strong> The first version had no Spotify, no analytics, no streak system. Each feature was added based on actual use — not upfront design. Shipping early gave me real feedback loops.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cs-cta cs-section" data-reveal>
+    <h3>SEE IT IN ACTION</h3>
+    <p>Try Focus Flow live — it's free, instant, and no sign-up needed.</p>
+    <div class="cta-buttons">
+      <a href="https://yashpatil3495.github.io/timer/" target="_blank" rel="noopener" class="btn-cta primary">Open Live Demo ↗</a>
+      <a href="https://github.com/yashpatil3495/timer" target="_blank" rel="noopener" class="btn-cta ghost">View Source Code</a>
+      <a href="../index.html#contact" class="btn-cta ghost">Get In Touch</a>
+    </div>
+  </div>
+
+  <!-- BETWEEN CASE STUDIES NAV -->
+  <div class="cs-nav cs-section" data-reveal>
+    <a href="../index.html">← Back to Portfolio</a>
+    <div class="cs-nav-next">
+      <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Next Case Study</div>
+      <a href="case-study-linguavox.html">LinguaVox →</a>
+    </div>
+  </div>
+
+</main>
+
+<script src="../js/case-study-focus-flow.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinguaVox — Case Study | Yash Patil</title>
+<meta name="description" content="Deep-dive case study of LinguaVox — a real-time voice translation web app by Yash Patil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230c0a06'/><text y='72' x='50' text-anchor='middle' font-size='58' font-family='serif' font-weight='bold' fill='%23e8a832'>Y</text></svg>">
+<link rel="stylesheet" href="../css/case-study-linguavox.css">
+</head>
+<body>
+<div id="read-progress"></div>
+<nav>
+  <a href="../index.html" class="nav-logo">YP<span>← Portfolio</span></a>
+  <div class="nav-right">
+    <a href="../index.html#work" class="nav-back">All Projects</a>
+    <a href="https://yashpatil3495.github.io/LinguaVox2/" target="_blank" rel="noopener" class="nav-live">Live Demo ↗</a>
+  </div>
+</nav>
+<section class="cs-hero">
+  <canvas class="hero-bg-canvas" id="hero-canvas"></canvas>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-meta"><span class="section-num">02 / LANGUAGE</span> Case Study</div>
+    <span class="hero-emoji">🗣</span>
+    <h1 class="hero-title">LINGUA<br><span>VOX</span></h1>
+    <p class="hero-subtitle">Real-time voice translation in your browser — no app install, no account, no friction.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">Web Speech API</span><span class="hero-tag">TTS Synthesis</span><span class="hero-tag">Fetch API</span><span class="hero-tag">Mobile-First</span><span class="hero-tag">Voice Match</span>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+<main class="cs-content">
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">01</span> The Problem</div>
+    <h2>LANGUAGE BARRIERS ONLINE</h2>
+    <div class="problem-block">
+      <div class="block-label">Core Problem</div>
+      <p>Over 1.5 billion people use English as a second language. Switching between Google Translate, a speech-to-text app, and your actual content is slow, clunky, and breaks the flow of real communication.</p>
+    </div>
+    <p>I wanted to build something that worked instantly — speak into it, get translation, hear it back — all in one place, all in the browser, all without any installation or sign-in flow.</p>
+    <p>The challenge was <strong>chaining three separate browser APIs</strong> (speech recognition → translation → speech synthesis) in a way that felt seamless and native, not technical and fragile.</p>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">02</span> Research & Discovery</div>
+    <h2>HOW WE PROCESS LANGUAGE</h2>
+    <p>I researched how language learners and travelers actually use translation tools. The patterns were consistent: <strong>speed beats accuracy for most conversational scenarios</strong>, mobile use dominates, and people hate typing what they could just say.</p>
+    <div class="insight-grid">
+      <div class="insight-card"><span class="insight-icon">🎙</span><div class="insight-title">Voice First</div><div class="insight-text">72% of mobile translation users prefer speaking to typing, especially in real-world contexts like travel or meetings.</div></div>
+      <div class="insight-card"><span class="insight-icon">⚡</span><div class="insight-title">Speed Matters</div><div class="insight-text">Users abandon translation flows if they take more than 3 taps. Every extra step loses a user.</div></div>
+      <div class="insight-card"><span class="insight-icon">🌐</span><div class="insight-title">Browser APIs</div><div class="insight-text">The Web Speech API supports 80+ languages natively — but its quirks (mobile Chrome vs Safari vs Firefox) required extensive cross-browser testing.</div></div>
+      <div class="insight-card"><span class="insight-icon">📱</span><div class="insight-title">Mobile Constraints</div><div class="insight-text">iOS Safari requires user gesture to trigger speech synthesis. Designing around this was a key UX constraint.</div></div>
+    </div>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">03</span> Design Decisions</div>
+    <h2>BUILDING THE PIPELINE</h2>
+    <div class="decision-list">
+      <div class="decision-item">
+        <div class="decision-num">01</div>
+        <div>
+          <div class="decision-title">MOBILE-FIRST LAYOUT</div>
+          <p class="decision-text">The entire UI was designed for a phone held in one hand. Large tap targets, thumb-reachable buttons, and a single-column layout that works at 320px width without horizontal scroll.</p>
+          <span class="decision-tag">UX Design</span>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">02</div>
+        <div>
+          <div class="decision-title">CHAINED API ARCHITECTURE</div>
+          <p class="decision-text">The flow: SpeechRecognition API captures audio → result text sent to translation endpoint via Fetch API → translated text fed into SpeechSynthesis API with voice-matched language. Each step has its own error boundary so one failure doesn't break the whole chain.</p>
+          <span class="decision-tag">Technical Architecture</span>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">03</div>
+        <div>
+          <div class="decision-title">VOICE MATCHING</div>
+          <p class="decision-text">When the output language is set to French, LinguaVox picks a French voice for TTS — not a generic voice reading French phonemes in an American accent. This was done by filtering the SpeechSynthesis voice list by language code (fr-FR, es-ES, etc.).</p>
+          <span class="decision-tag">Audio Engineering</span>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">04</div>
+        <div>
+          <div class="decision-title">SPEED CONTROL</div>
+          <p class="decision-text">A rate slider (0.5x–2x) lets users slow down TTS for language learning, or speed it up for quick comprehension. This was a feature request from imagining a student studying pronunciation — not just a traveler needing quick translation.</p>
+          <span class="decision-tag">Accessibility</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">04</span> Technical Stack</div>
+    <h2>NATIVE BROWSER POWER</h2>
+    <p>LinguaVox is built entirely on <strong>native browser APIs</strong> — no external SDK, no native app wrapper, no build step. This means it works instantly as a URL and is maintainable without any dependency management.</p>
+    <div class="tech-grid">
+      <span class="tech-pill">Web Speech API</span><span class="tech-pill">SpeechSynthesis API</span><span class="tech-pill">Fetch API</span><span class="tech-pill">HTML5</span><span class="tech-pill">CSS Grid</span><span class="tech-pill">Vanilla JS</span><span class="tech-pill">MyMemory Translation API</span>
+    </div>
+    <p>Cross-browser compatibility was the hardest part. Safari on iOS doesn't support continuous speech recognition, so I implemented a tap-to-start/tap-to-stop model that works universally rather than relying on always-on listening.</p>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">05</span> Outcome</div>
+    <h2>INSTANT & ACCESSIBLE</h2>
+    <div class="metrics-grid">
+      <div class="metric-cell"><div class="metric-val">80+</div><div class="metric-label">Languages Supported</div></div>
+      <div class="metric-cell"><div class="metric-val">0</div><div class="metric-label">App Installs Needed</div></div>
+      <div class="metric-cell"><div class="metric-val">3</div><div class="metric-label">APIs Chained</div></div>
+      <div class="metric-cell"><div class="metric-val">100%</div><div class="metric-label">Client-Side Processing</div></div>
+    </div>
+    <div class="cs-quote">
+      <blockquote>"The satisfying moment was when I tested it in Hindi → English and heard the English response in a natural voice. That's three separate browser APIs working in sequence — and to a user, it just feels like magic."</blockquote>
+      <cite>— Yash Patil, on the build</cite>
+    </div>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">06</span> What I Learned</div>
+    <h2>LESSONS CARRIED FORWARD</h2>
+    <div class="lesson-list">
+      <div class="lesson-item"><span class="lesson-bullet">✦</span><span class="lesson-text"><strong>Browser APIs are powerful but opinionated.</strong> The Web Speech API's behavior varies wildly across browsers and OS versions. Building for the constraints (rather than fighting them) led to a more stable product.</span></div>
+      <div class="lesson-item"><span class="lesson-bullet">✦</span><span class="lesson-text"><strong>Error boundaries save UX.</strong> When the translation API returns an error, the user sees a friendly message — not a blank field or a silent failure. Every async operation needs its own fallback.</span></div>
+      <div class="lesson-item"><span class="lesson-bullet">✦</span><span class="lesson-text"><strong>Mobile-first forces clarity.</strong> Designing for a 375px viewport first eliminates every unnecessary element. The desktop layout then has room to breathe — not the other way around.</span></div>
+    </div>
+  </section>
+  <div class="cs-cta cs-section" data-reveal>
+    <h3>SPEAK AND TRANSLATE</h3>
+    <p>Open LinguaVox in your browser — works best on Chrome mobile.</p>
+    <div class="cta-buttons">
+      <a href="https://yashpatil3495.github.io/LinguaVox2/" target="_blank" rel="noopener" class="btn-cta primary">Open Live Demo ↗</a>
+      <a href="https://github.com/yashpatil3495/my-portfolio2" target="_blank" rel="noopener" class="btn-cta ghost">View Source Code</a>
+    </div>
+  </div>
+  <div class="cs-nav cs-section" data-reveal>
+    <a href="case-study-focus-flow.html">← Focus Flow</a>
+    <div class="cs-nav-next">
+      <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Next Case Study</div>
+      <a href="case-study-fortress-pro.html">Fortress Pro →</a>
+    </div>
+  </div>
+</main>
+<script src="../js/case-study-linguavox.js"></script>
+</body>
+</html>

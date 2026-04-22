@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CipherPixel — Case Study | Yash Patil</title>
+<meta name="description" content="Case study: CipherPixel — pixel-level steganography tool by Yash Patil.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CipherPixel — Case Study | Yash Patil">
+<meta property="og:description" content="Case study: CipherPixel — pixel-level steganography tool by Yash Patil.">
+<meta property="og:url" content="https://yashpatil3495.github.io/case-studies/case-study-cipherpixel.html">
+<meta property="og:image" content="https://yashpatil3495.github.io/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CipherPixel — Case Study | Yash Patil">
+<meta name="twitter:description" content="Case study: CipherPixel — pixel-level steganography tool by Yash Patil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230c0a06'/><text y='72' x='50' text-anchor='middle' font-size='58' font-family='serif' font-weight='bold' fill='%23e8a832'>Y</text></svg>">
+<link rel="stylesheet" href="../css/case-study-cipherpixel.css">
+</head>
+<body>
+<div id="read-progress"></div>
+<nav>
+  <a href="../index.html" class="nav-logo">YP<span>← Portfolio</span></a>
+  <div class="nav-right">
+    <a href="../index.html#work" class="nav-back">All Projects</a>
+    <a href="https://yashpatil3495.github.io/CipherPixel/" target="_blank" rel="noopener" class="nav-live">Live Demo ↗</a>
+  </div>
+</nav>
+<section class="cs-hero">
+  <canvas class="hero-bg-canvas" id="hero-canvas"></canvas>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-meta"><span class="section-num">04 / CREATIVE</span> Case Study</div>
+    <span class="hero-emoji">🖼</span>
+    <h1 class="hero-title">CIPHER<br><span>PIXEL</span></h1>
+    <p class="hero-subtitle">Hide secret messages inside images — pixel by pixel, invisible to the eye, perfectly extractable in the browser.</p>
+    <div class="hero-tags"><span class="hero-tag">Canvas API</span><span class="hero-tag">Steganography</span><span class="hero-tag">File API</span><span class="hero-tag">Drag & Drop</span><span class="hero-tag">LSB Encoding</span></div>
+  </div>
+</section>
+<div class="divider"></div>
+<main class="cs-content">
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">01</span> The Problem</div>
+    <h2>HIDING IN PLAIN SIGHT</h2>
+    <div class="problem-block">
+      <div class="block-label">Core Concept</div>
+      <p>Encryption makes messages unreadable. Steganography makes them invisible. The challenge: implement pixel-level LSB steganography entirely in the browser, with a UI so simple anyone can use it — no cryptography background required.</p>
+    </div>
+    <p>I was fascinated by the idea that <strong>every image is a potential carrier for hidden data</strong>. A JPEG of a sunset can contain a complete message, and no viewer would ever know. The browser's Canvas API makes this possible without any server-side processing.</p>
+    <p>The creative challenge was making this feel magical — not technical. The UX had to make the encoding/decoding feel like a conjuring trick, not a software operation.</p>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">02</span> Research & Discovery</div>
+    <h2>THE SCIENCE OF INVISIBILITY</h2>
+    <p>I researched <strong>Least Significant Bit (LSB) steganography</strong> — a technique where the lowest-order bit of each pixel's color channel (R, G, B) is replaced with a bit of the hidden message. Humans can't perceive the resulting color shift (1/256 of a shade), but the data is perfectly recoverable.</p>
+    <div class="insight-grid">
+      <div class="insight-card"><span class="insight-icon">🎨</span><div class="insight-title">LSB Encoding</div><div class="insight-text">Modifying only the last bit of each R, G, B value produces color changes of less than 0.4% — completely imperceptible to the human eye.</div></div>
+      <div class="insight-card"><span class="insight-icon">📐</span><div class="insight-title">Capacity Math</div><div class="insight-text">A 1024×768 image has ~786K pixels × 3 channels = 2.3M bits of hiding capacity. That's ~290KB of text — enough for a novel chapter.</div></div>
+      <div class="insight-card"><span class="insight-icon">🖥</span><div class="insight-title">Canvas API Access</div><div class="insight-text">ImageData.data gives direct read/write access to every pixel's RGBA values — this is the foundation the entire project is built on.</div></div>
+      <div class="insight-card"><span class="insight-icon">⚠️</span><div class="insight-title">Format Caveat</div><div class="insight-text">JPEG compression destroys LSB data — the output must be PNG (lossless). This became a key UX design constraint: always export as PNG.</div></div>
+    </div>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">03</span> Design Decisions</div>
+    <h2>MAKING MAGIC USABLE</h2>
+    <div class="decision-list">
+      <div class="decision-item">
+        <div class="decision-num">01</div>
+        <div>
+          <div class="decision-title">DRAG-AND-DROP FIRST</div>
+          <p class="decision-text">The first interaction is dragging an image directly onto the canvas. No file picker dialog, no button hunting. This immediately signals that the tool is interactive and direct — you're working with pixels, so the experience should feel hands-on.</p>
+          <span class="decision-tag">Interaction Design</span>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">02</div>
+        <div>
+          <div class="decision-title">ENCODE / DECODE MODE TOGGLE</div>
+          <p class="decision-text">A single toggle switches between encoding (hiding a message) and decoding (extracting one). The UI restructures around the mode — encode shows a text input, decode shows extracted output. Same image slot, same canvas, different operation.</p>
+          <span class="decision-tag">UX Architecture</span>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">03</div>
+        <div>
+          <div class="decision-title">ALWAYS EXPORT AS PNG</div>
+          <p class="decision-text">When the user downloads the encoded image, CipherPixel forces PNG format via a canvas.toBlob() call — regardless of the input format. JPEG compression would corrupt the hidden data. This is done transparently: the user just clicks "Download" and gets a PNG.</p>
+          <span class="decision-tag">Technical Constraint → UX Decision</span>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">04</div>
+        <div>
+          <div class="decision-title">LSB DELIMITER PATTERN</div>
+          <p class="decision-text">The message is terminated with a null byte sequence (8 zero bits) so the decoder knows when to stop reading. Without this, the decoder would try to read every pixel in the image and return garbage after the real message ends.</p>
+          <span class="decision-tag">Algorithm Design</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">04</span> Technical Stack</div>
+    <h2>THE CANVAS AS A FILESYSTEM</h2>
+    <div class="tech-grid">
+      <span class="tech-pill">Canvas API</span><span class="tech-pill">ImageData API</span><span class="tech-pill">File API</span><span class="tech-pill">Drag & Drop API</span><span class="tech-pill">LSB Steganography</span><span class="tech-pill">Blob API</span><span class="tech-pill">Vanilla JS</span>
+    </div>
+    <p>The core encode function iterates pixel by pixel, replacing the last bit of R, G, B values with message bits. The decode function reads those same bits back and reconstructs the original character string. All of this happens synchronously on the canvas — <strong>no server ever sees the image or the message</strong>.</p>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">05</span> Outcome</div>
+    <h2>INVISIBLE & SHIPPED</h2>
+    <div class="metrics-grid">
+      <div class="metric-cell"><div class="metric-val">0</div><div class="metric-label">Server Requests</div></div>
+      <div class="metric-cell"><div class="metric-val">3</div><div class="metric-label">Color Channels Used</div></div>
+      <div class="metric-cell"><div class="metric-val">~290</div><div class="metric-label">KB Max Message (1080p)</div></div>
+      <div class="metric-cell"><div class="metric-val">100%</div><div class="metric-label">In-Browser Processing</div></div>
+    </div>
+    <div class="cs-quote">
+      <blockquote>"The first time I encoded 'Hello World' into a photo and decoded it back perfectly, I felt like I'd pulled off a heist. That's the feeling I wanted to give every user of the tool."</blockquote>
+      <cite>— Yash Patil, on the project's emotional core</cite>
+    </div>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">06</span> What I Learned</div>
+    <h2>LESSONS CARRIED FORWARD</h2>
+    <div class="lesson-list">
+      <div class="lesson-item"><span class="lesson-bullet">✦</span><span class="lesson-text"><strong>Platform primitives are powerful.</strong> The Canvas API gives you direct pixel access — that's enough to implement image steganography entirely client-side. Most developers underestimate how much the browser can already do.</span></div>
+      <div class="lesson-item"><span class="lesson-bullet">✦</span><span class="lesson-text"><strong>Format matters deeply.</strong> The JPEG/PNG distinction wasn't a minor technical note — it defined a core UX constraint. Technical decisions always have design consequences.</span></div>
+      <div class="lesson-item"><span class="lesson-bullet">✦</span><span class="lesson-text"><strong>Delight is a design goal.</strong> CipherPixel isn't solving a critical workflow problem. It's delightful — and delight is a legitimate and underrated design objective. Sometimes the best projects are the ones that make people say "wait, that's possible?"</span></div>
+    </div>
+  </section>
+  <div class="cs-cta cs-section" data-reveal>
+    <h3>HIDE YOUR FIRST MESSAGE</h3>
+    <p>Try CipherPixel — drag an image in, type a message, and download the encoded result.</p>
+    <div class="cta-buttons">
+      <a href="https://yashpatil3495.github.io/CipherPixel/" target="_blank" rel="noopener" class="btn-cta primary">Open Live Demo ↗</a>
+      <a href="https://github.com/yashpatil3495/CipherPixel" target="_blank" rel="noopener" class="btn-cta ghost">View Source Code</a>
+      <a href="../index.html#contact" class="btn-cta ghost">Get In Touch</a>
+    </div>
+  </div>
+  <div class="cs-nav cs-section" data-reveal>
+    <a href="case-study-fortress-pro.html">← Fortress Pro</a>
+    <a href="../index.html">Back to Portfolio →</a>
+  </div>
+</main>
+<script src="../js/case-study-cipherpixel.js"></script>
+</body>
+</html>

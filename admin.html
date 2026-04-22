@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Yash Patil Portfolio</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0804;
+    --surface: #111008;
+    --surface2: #181410;
+    --border: #2a2418;
+    --border2: #3a3020;
+    --amber: #e8a832;
+    --amber-dim: #b07820;
+    --amber-glow: rgba(232,168,50,0.08);
+    --text: #e8e0cc;
+    --muted: #6b6050;
+    --danger: #c0392b;
+    --success: #27ae60;
+    --teal: #2abfb3;
+    --purple: #9b7fe8;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Cormorant Garamond', serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── LOGIN SCREEN ── */
+  #login-screen {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg);
+    z-index: 9999;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+  #login-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .login-box {
+    width: min(400px, 90vw);
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    padding: 48px 40px;
+    position: relative;
+  }
+  .login-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--amber);
+  }
+  .login-logo {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    letter-spacing: 0.05em;
+    color: var(--amber);
+    margin-bottom: 4px;
+  }
+  .login-sub {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .login-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .login-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .login-input:focus { border-color: var(--amber); }
+  .login-btn {
+    width: 100%;
+    background: var(--amber);
+    color: var(--bg);
+    border: none;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    padding: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .login-btn:hover { background: #f0b840; }
+  .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .login-error {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--danger);
+    margin-top: 12px;
+    display: none;
+  }
+  .login-error.show { display: block; }
+
+  /* ── LAYOUT ── */
+  #app { display: none; }
+  #app.visible { display: flex; min-height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 240px; flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    position: sticky; top: 0; height: 100vh;
+    overflow-y: auto;
+  }
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo-text {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--amber);
+    letter-spacing: 0.06em;
+  }
+  .sidebar-logo-sub {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .sidebar-section {
+    padding: 20px 16px 8px;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .nav-item:hover { color: var(--text); background: var(--amber-glow); }
+  .nav-item.active { color: var(--amber); border-left-color: var(--amber); background: var(--amber-glow); }
+  .nav-icon { font-size: 0.9rem; width: 16px; text-align: center; }
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .logout-btn {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    background: none; border: none; cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+    padding: 0;
+  }
+  .logout-btn:hover { color: var(--danger); }
+
+  /* ── MAIN ── */
+  .main { flex: 1; overflow-y: auto; }
+
+  .topbar {
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    letter-spacing: 0.06em;
+    color: var(--text);
+  }
+  .save-btn {
+    background: var(--amber);
+    color: var(--bg);
+    border: none;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    padding: 10px 28px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .save-btn:hover { background: #f0b840; }
+  .save-btn:active { transform: scale(0.97); }
+  .save-btn.saving { opacity: 0.6; pointer-events: none; }
+
+  .content { padding: 36px 40px; max-width: 960px; }
+
+  /* ── PANELS ── */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── SECTION CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--amber);
+    opacity: 0.4;
+  }
+  .card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .card-body { padding: 24px; }
+
+  /* ── FORM ELEMENTS ── */
+  .field { margin-bottom: 20px; }
+  .field:last-child { margin-bottom: 0; }
+  .field-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.63rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .field-input, .field-textarea, .field-select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+  .field-input:focus, .field-textarea:focus, .field-select:focus {
+    border-color: var(--amber);
+  }
+  .field-textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
+  .field-hint {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* ── SKILLS PILLS ── */
+  .skills-editor { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .skill-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    padding: 5px 10px 5px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text);
+  }
+  .skill-chip-remove {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 0.9rem; line-height: 1;
+    padding: 0; transition: color 0.15s;
+  }
+  .skill-chip-remove:hover { color: var(--danger); }
+  .skill-add-row { display: flex; gap: 8px; }
+  .skill-add-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .skill-add-input:focus { border-color: var(--amber); }
+  .skill-add-btn {
+    background: var(--amber-glow);
+    border: 1px solid var(--amber-dim);
+    color: var(--amber);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+  .skill-add-btn:hover { background: rgba(232,168,50,0.15); }
+
+  /* ── PROJECTS ── */
+  .project-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .project-item-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .project-item-header:hover { background: var(--amber-glow); }
+  .project-item-title {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+  .project-emoji { font-size: 1.1rem; }
+  .project-item-toggle {
+    font-size: 0.7rem; color: var(--muted);
+    transition: transform 0.2s;
+  }
+  .project-item.open .project-item-toggle { transform: rotate(180deg); }
+  .project-item-body {
+    display: none;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .project-item.open .project-item-body { display: block; }
+
+  .tags-editor { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    padding: 3px 8px 3px 10px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+  .tag-chip-remove {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 0.8rem;
+    padding: 0; line-height: 1;
+    transition: color 0.15s;
+  }
+  .tag-chip-remove:hover { color: var(--danger); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonial-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .testimonial-item-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .testimonial-item-header:hover { background: var(--amber-glow); }
+  .testimonial-item-title {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+  .testimonial-initials {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 0.6rem;
+    background: rgba(232,168,50,0.15); color: var(--amber);
+  }
+  .testimonial-item-toggle {
+    font-size: 0.7rem; color: var(--muted);
+    transition: transform 0.2s;
+  }
+  .testimonial-item.open .testimonial-item-toggle { transform: rotate(180deg); }
+  .testimonial-item-body {
+    display: none;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .testimonial-item.open .testimonial-item-body { display: block; }
+  .add-testimonial-btn {
+    width: 100%;
+    background: var(--amber-glow);
+    border: 1px dashed var(--amber-dim);
+    color: var(--amber);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    padding: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.15s;
+    margin-top: 8px;
+  }
+  .add-testimonial-btn:hover { background: rgba(232,168,50,0.15); }
+  .remove-btn {
+    background: rgba(192,57,43,0.1);
+    border: 1px solid rgba(192,57,43,0.3);
+    color: var(--danger);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.15s;
+    margin-top: 12px;
+  }
+  .remove-btn:hover { background: rgba(192,57,43,0.2); }
+
+  /* ── COLOR SELECT ── */
+  .color-options { display: flex; gap: 8px; margin-top: 6px; }
+  .color-option {
+    width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent;
+    cursor: pointer; transition: border-color 0.15s, transform 0.1s;
+  }
+  .color-option:hover { transform: scale(1.15); }
+  .color-option.selected { border-color: var(--text); }
+  .color-option[data-color="amber"] { background: rgba(232,168,50,0.5); }
+  .color-option[data-color="teal"] { background: rgba(42,191,179,0.5); }
+  .color-option[data-color="purple"] { background: rgba(155,127,232,0.5); }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed; bottom: 32px; right: 32px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-left: 3px solid var(--success);
+    padding: 14px 20px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text);
+    z-index: 9000;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast.error { border-left-color: var(--danger); }
+
+  /* ── PREVIEW BADGE ── */
+  .preview-link {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    transition: color 0.15s;
+  }
+  .preview-link:hover { color: var(--amber); }
+
+  /* ── AVAILABILITY TOGGLE ── */
+  .toggle-row { display: flex; align-items: center; gap: 16px; }
+  .toggle {
+    position: relative; width: 44px; height: 24px;
+    cursor: pointer; user-select: none;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .toggle-track {
+    position: absolute; inset: 0;
+    background: var(--border2);
+    border-radius: 12px;
+    transition: background 0.2s;
+  }
+  .toggle input:checked + .toggle-track { background: var(--amber); }
+  .toggle-thumb {
+    position: absolute; top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    background: var(--text);
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  .toggle input:checked ~ .toggle-thumb { transform: translateX(20px); }
+  .toggle-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text);
+  }
+
+  /* ── LOADING OVERLAY ── */
+  .loading-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10,8,4,0.8);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9990;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+  .loading-overlay.show { opacity: 1; visibility: visible; }
+  .loading-spinner {
+    width: 32px; height: 32px;
+    border: 2px solid var(--border2);
+    border-top-color: var(--amber);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); }
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">ADMIN</div>
+    <div class="login-sub">Yash Patil · Portfolio CMS</div>
+    <label class="login-label">Password</label>
+    <input type="password" class="login-input" id="login-pass" placeholder="Enter admin password" autocomplete="current-password">
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Enter Dashboard</button>
+    <div class="login-error" id="login-error">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ── LOADING ── -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-spinner"></div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-text">YP·CMS</div>
+      <div class="sidebar-logo-sub">Portfolio Admin</div>
+    </div>
+    <div class="sidebar-section">Content</div>
+    <div class="nav-item active" onclick="showPanel('hero')" id="nav-hero">
+      <span class="nav-icon">✦</span> Hero
+    </div>
+    <div class="nav-item" onclick="showPanel('about')" id="nav-about">
+      <span class="nav-icon">◈</span> About & Bio
+    </div>
+    <div class="nav-item" onclick="showPanel('skills')" id="nav-skills">
+      <span class="nav-icon">◎</span> Skills
+    </div>
+    <div class="nav-item" onclick="showPanel('projects')" id="nav-projects">
+      <span class="nav-icon">⬡</span> Projects
+    </div>
+    <div class="nav-item" onclick="showPanel('testimonials')" id="nav-testimonials">
+      <span class="nav-icon">❝</span> Testimonials
+    </div>
+    <div class="nav-item" onclick="showPanel('contact')" id="nav-contact">
+      <span class="nav-icon">◉</span> Contact & Socials
+    </div>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">⎋ Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="topbar">
+      <div class="page-title" id="topbar-title">HERO</div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <a href="index.html" target="_blank" class="preview-link">↗ View Site</a>
+        <button class="save-btn" id="save-btn" onclick="saveAll()">Save Changes</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── HERO PANEL ── -->
+      <div class="panel active" id="panel-hero">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Hero Section</span></div>
+          <div class="card-body">
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Full Name</label>
+                <input class="field-input" id="hero-name" value="Yash Patil">
+              </div>
+              <div class="field">
+                <label class="field-label">Title / Role</label>
+                <input class="field-input" id="hero-title" value="Frontend Developer & UI/UX Designer">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Typed Roles (comma-separated)</label>
+              <input class="field-input" id="hero-typed" value="Frontend Developer, UI/UX Designer, AI Enthusiast">
+              <div class="field-hint">These cycle through in the animated hero text</div>
+            </div>
+            <div class="field">
+              <label class="field-label">Availability Status</label>
+              <div class="toggle-row">
+                <label class="toggle">
+                  <input type="checkbox" id="hero-available" checked>
+                  <div class="toggle-track"></div>
+                  <div class="toggle-thumb"></div>
+                </label>
+                <span class="toggle-label">Available for Internships</span>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Meta Description</label>
+              <input class="field-input" id="hero-meta" value="Building responsive web apps, AI-powered tools, and immersive digital experiences.">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ABOUT PANEL ── -->
+      <div class="panel" id="panel-about">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Bio</span></div>
+          <div class="card-body">
+            <div class="field">
+              <label class="field-label">About Paragraph</label>
+              <textarea class="field-textarea" id="about-bio" style="min-height:120px;">Currently pursuing my Bachelor of Computer Engineering (2025–Present), I'm continuously improving my skills in modern web technologies while building real-world projects.</textarea>
+            </div>
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Location</label>
+                <input class="field-input" id="about-location" value="Pune, India">
+              </div>
+              <div class="field">
+                <label class="field-label">Status Label</label>
+                <input class="field-input" id="about-status" value="Frontend Developer · Pune, India">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Education</span></div>
+          <div class="card-body">
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Degree</label>
+                <input class="field-input" id="edu-degree" value="Bachelor of Computer Engineering">
+              </div>
+              <div class="field">
+                <label class="field-label">Years</label>
+                <input class="field-input" id="edu-years" value="2025 – Present">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Institution</label>
+              <input class="field-input" id="edu-institute" value="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SKILLS PANEL ── -->
+      <div class="panel" id="panel-skills">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Technical Skills</span></div>
+          <div class="card-body">
+            <div class="skills-editor" id="tech-skills-list"></div>
+            <div class="skill-add-row">
+              <input class="skill-add-input" id="tech-skill-input" placeholder="Add skill (e.g. React)" onkeydown="if(event.key==='Enter') addSkill('tech')">
+              <button class="skill-add-btn" onclick="addSkill('tech')">+ Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Soft Skills</span></div>
+          <div class="card-body">
+            <div class="skills-editor" id="soft-skills-list"></div>
+            <div class="skill-add-row">
+              <input class="skill-add-input" id="soft-skill-input" placeholder="Add skill (e.g. Leadership)" onkeydown="if(event.key==='Enter') addSkill('soft')">
+              <button class="skill-add-btn" onclick="addSkill('soft')">+ Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROJECTS PANEL ── -->
+      <div class="panel" id="panel-projects">
+        <div id="projects-list"></div>
+      </div>
+
+      <!-- ── TESTIMONIALS PANEL ── -->
+      <div class="panel" id="panel-testimonials">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Manage Testimonials</span></div>
+          <div class="card-body">
+            <div class="field-hint" style="margin-bottom:16px;">Add, edit, or remove testimonials displayed on your portfolio. Changes sync across all devices after saving.</div>
+            <div id="testimonials-list"></div>
+            <button class="add-testimonial-btn" onclick="addTestimonial()">+ Add New Testimonial</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CONTACT PANEL ── -->
+      <div class="panel" id="panel-contact">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Contact Info</span></div>
+          <div class="card-body">
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Email</label>
+                <input class="field-input" id="contact-email" value="yashpatil3495@gmail.com">
+              </div>
+              <div class="field">
+                <label class="field-label">WhatsApp Number</label>
+                <input class="field-input" id="contact-wa" value="917741010554">
+                <div class="field-hint">Include country code, no + or spaces</div>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Contact Section Tagline</label>
+              <input class="field-input" id="contact-sub" value="Have a project idea, internship opportunity, or just want to say hi? I'd love to hear from you.">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Social Links</span></div>
+          <div class="card-body">
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">GitHub URL</label>
+                <input class="field-input" id="social-github" value="https://github.com/yashpatil3495">
+              </div>
+              <div class="field">
+                <label class="field-label">LinkedIn URL</label>
+                <input class="field-input" id="social-linkedin" value="https://www.linkedin.com/in/yash-patil-b30b18363">
+              </div>
+            </div>
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Twitter / X URL</label>
+                <input class="field-input" id="social-twitter" value="">
+              </div>
+              <div class="field">
+                <label class="field-label">Instagram URL</label>
+                <input class="field-input" id="social-instagram" value="">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">SEO & Meta</span></div>
+          <div class="card-body">
+            <div class="field">
+              <label class="field-label">Site URL (canonical)</label>
+              <input class="field-input" id="meta-url" value="https://yashpatil3495.github.io/">
+            </div>
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Twitter Handle</label>
+                <input class="field-input" id="meta-twitter" value="@yashpatil3495">
+              </div>
+              <div class="field">
+                <label class="field-label">Keywords (comma-separated)</label>
+                <input class="field-input" id="meta-keywords" value="Yash Patil, Frontend Developer, UI UX Designer, Pune">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast">✓ Changes saved successfully</div>
+
+<script>
+// ── DATA ──
+const DEFAULT_DATA = {
+  hero: {
+    name: 'Yash Patil',
+    title: 'Frontend Developer & UI/UX Designer',
+    typed: 'Frontend Developer, UI/UX Designer, AI Enthusiast',
+    available: true,
+    meta: 'Building responsive web apps, AI-powered tools, and immersive digital experiences.'
+  },
+  about: {
+    bio: "Currently pursuing my Bachelor of Computer Engineering (2025–Present), I'm continuously improving my skills in modern web technologies while building real-world projects.",
+    location: 'Pune, India',
+    status: 'Frontend Developer · Pune, India',
+    eduDegree: 'Bachelor of Computer Engineering',
+    eduYears: '2025 – Present',
+    eduInstitute: ''
+  },
+  skills: {
+    tech: ['HTML5','CSS3','JavaScript','C','C++','Java','Python','React','Three.js','UI/UX Design','Generative AI'],
+    soft: ['Communication','Problem Solving','Teamwork','Creativity','Time Management']
+  },
+  projects: [
+    { emoji:'⏱', title:'Focus Flow', category:'01 / Productivity', problem:'Modern work is full of distractions. Productivity tools are often bland and offer no real motivation system.', solution:'Focus Flow is a gamified productivity dashboard combining a Pomodoro timer, drag-and-drop task management, and Spotify integration. Real-time analytics track your streaks, and a goal system rewards your focus sessions — turning work into a game.', tags:['Spotify Embed','Goal Tracking','Task Management','Data Visualization','Responsive'], live:'https://yashpatil3495.github.io/timer/', github:'https://github.com/yashpatil3495/timer.git' },
+    { emoji:'🗣', title:'LinguaVox', category:'02 / Language', problem:'Language barriers on the web are frustrating. Existing tools feel clunky or require switching between multiple apps.', solution:"LinguaVox is a sleek, mobile-first web app with real-time translation, voice input via the Web Speech API, and text-to-speech synthesis. It supports multiple languages with voice matching and adjustable speed control — all in the browser.", tags:['Web Speech API','Fetch API','TTS Synthesis','Speed Control','Voice Match'], live:'https://yashpatil3495.github.io/LinguaVox2/', github:'https://github.com/yashpatil3495/my-portfolio2.git' },
+    { emoji:'🔐', title:'Fortress Pro', category:'03 / Security', problem:'Most password generators are boring, insecure, or lack any real feedback on password strength.', solution:'Fortress Pro uses the Crypto API to generate cryptographically secure passwords with a real-time entropy estimation engine. A session history system lets you track generated passwords, and the theme-adaptive UI supports custom character filtering.', tags:['Crypto API','Entropy Engine','Session History','Theme Adaptive UI'], live:'https://yashpatil3495.github.io/Fortress-Pro/', github:'https://github.com/yashpatil3495/Fortress-Pro.git' },
+    { emoji:'🖼', title:'CipherPixel', category:'04 / Creative', problem:'Sharing secret messages online is either insecure or requires complex encryption apps. What if you could hide a message in plain sight?', solution:'CipherPixel uses pixel-level steganography via the Canvas API to encode hidden text inside image files. Drag-and-drop an image, type your message, encode it — then decode it later. The message is invisible to the naked eye but perfectly extractable.', tags:['Canvas API','Steganography','Drag & Drop','File API'], live:'https://yashpatil3495.github.io/CipherPixel/', github:'https://github.com/yashpatil3495/CipherPixel.git' }
+  ],
+  testimonials: [
+    { quote: "Yash has an incredible eye for detail. The UI work he delivered was polished, fast, and well beyond what I expected for the timeline.", name: "Arjun Kulkarni", title: "Project Collaborator · Full-Stack Developer", initials: "AK", color: "amber", linkedin: "#" },
+    { quote: "One of the most self-driven developers I've worked alongside. Yash picks up new tools fast and ships things that actually work — cleanly.", name: "Sneha Rao", title: "Peer · Computer Engineering, PICT", initials: "SR", color: "teal", linkedin: "#" },
+    { quote: "The attention he gives to typography and motion makes his work stand out immediately. It's rare to see someone this young think so carefully about user experience.", name: "Prof. Meghna Joshi", title: "Faculty Mentor · Dept. of Computer Engineering", initials: "PM", color: "purple", linkedin: "#" }
+  ],
+  contact: {
+    email: 'yashpatil3495@gmail.com',
+    wa: '917741010554',
+    sub: "Have a project idea, internship opportunity, or just want to say hi? I'd love to hear from you.",
+    github: 'https://github.com/yashpatil3495',
+    linkedin: 'https://www.linkedin.com/in/yash-patil-b30b18363',
+    twitter: '',
+    instagram: '',
+    metaUrl: 'https://yashpatil3495.github.io/',
+    metaTwitter: '@yashpatil3495',
+    metaKeywords: 'Yash Patil, Frontend Developer, UI UX Designer, Pune'
+  }
+};
+
+let data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+let adminPassword = ''; // stored in memory for session
+
+// ── API HELPERS ──
+const API_BASE = '/.netlify/functions';
+
+function showLoading() { document.getElementById('loading-overlay').classList.add('show'); }
+function hideLoading() { document.getElementById('loading-overlay').classList.remove('show'); }
+
+// ── LOGIN ──
+async function doLogin() {
+  const pass = document.getElementById('login-pass').value;
+  if (!pass) return;
+
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true;
+  btn.textContent = 'Authenticating...';
+  document.getElementById('login-error').classList.remove('show');
+
+  try {
+    const res = await fetch(API_BASE + '/admin-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pass })
+    });
+
+    const result = await res.json();
+
+    if (res.ok && result.success) {
+      adminPassword = pass;
+      sessionStorage.setItem('yp_admin_session', 'active');
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app').classList.add('visible');
+      await loadData();
+      initAll();
+    } else {
+      document.getElementById('login-error').classList.add('show');
+      document.getElementById('login-pass').value = '';
+    }
+  } catch (err) {
+    console.error('Login error:', err);
+    document.getElementById('login-error').textContent = 'Connection error. Are you online?';
+    document.getElementById('login-error').classList.add('show');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Enter Dashboard';
+  }
+}
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+function doLogout() {
+  adminPassword = '';
+  sessionStorage.removeItem('yp_admin_session');
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').classList.remove('show');
+}
+
+// ── STORAGE ──
+async function loadData() {
+  showLoading();
+  try {
+    const res = await fetch(API_BASE + '/get-data');
+    if (res.ok) {
+      const serverData = await res.json();
+      if (serverData && typeof serverData === 'object') {
+        data = serverData;
+        // Ensure testimonials array exists (backwards compat)
+        if (!data.testimonials) data.testimonials = DEFAULT_DATA.testimonials;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load data from server:', err);
+    showToast('⚠ Could not load data. Using defaults.', true);
+  } finally {
+    hideLoading();
+  }
+}
+
+async function saveAll() {
+  // Collect hero
+  data.hero.name = document.getElementById('hero-name').value;
+  data.hero.title = document.getElementById('hero-title').value;
+  data.hero.typed = document.getElementById('hero-typed').value;
+  data.hero.available = document.getElementById('hero-available').checked;
+  data.hero.meta = document.getElementById('hero-meta').value;
+
+  // Collect about
+  data.about.bio = document.getElementById('about-bio').value;
+  data.about.location = document.getElementById('about-location').value;
+  data.about.status = document.getElementById('about-status').value;
+  data.about.eduDegree = document.getElementById('edu-degree').value;
+  data.about.eduYears = document.getElementById('edu-years').value;
+  data.about.eduInstitute = document.getElementById('edu-institute').value;
+
+  // Collect contact
+  data.contact.email = document.getElementById('contact-email').value;
+  data.contact.wa = document.getElementById('contact-wa').value;
+  data.contact.sub = document.getElementById('contact-sub').value;
+  data.contact.github = document.getElementById('social-github').value;
+  data.contact.linkedin = document.getElementById('social-linkedin').value;
+  data.contact.twitter = document.getElementById('social-twitter').value;
+  data.contact.instagram = document.getElementById('social-instagram').value;
+  data.contact.metaUrl = document.getElementById('meta-url').value;
+  data.contact.metaTwitter = document.getElementById('meta-twitter').value;
+  data.contact.metaKeywords = document.getElementById('meta-keywords').value;
+
+  // Skills & projects & testimonials are already updated in-memory via their handlers
+
+  const btn = document.getElementById('save-btn');
+  btn.classList.add('saving');
+  btn.textContent = 'Saving...';
+
+  try {
+    const res = await fetch(API_BASE + '/save-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: adminPassword, data: data })
+    });
+
+    const result = await res.json();
+
+    if (res.ok && result.success) {
+      showToast('✓ Changes saved & synced across all devices');
+    } else if (res.status === 401) {
+      showToast('⚠ Session expired. Please re-login.', true);
+      setTimeout(() => doLogout(), 2000);
+    } else {
+      showToast('⚠ Save failed: ' + (result.error || 'Unknown error'), true);
+    }
+  } catch (err) {
+    console.error('Save error:', err);
+    showToast('⚠ Network error. Could not save.', true);
+  } finally {
+    btn.classList.remove('saving');
+    btn.textContent = 'Save Changes';
+  }
+}
+
+// ── PANEL NAV ──
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  document.getElementById('topbar-title').textContent = id.toUpperCase();
+}
+
+// ── SKILLS ──
+function renderSkills(type) {
+  const list = document.getElementById(type + '-skills-list');
+  list.innerHTML = '';
+  data.skills[type].forEach((s, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'skill-chip';
+    chip.innerHTML = `${s} <button class="skill-chip-remove" onclick="removeSkill('${type}',${i})">×</button>`;
+    list.appendChild(chip);
+  });
+}
+function addSkill(type) {
+  const input = document.getElementById(type + '-skill-input');
+  const val = input.value.trim();
+  if (!val) return;
+  data.skills[type].push(val);
+  input.value = '';
+  renderSkills(type);
+}
+function removeSkill(type, i) {
+  data.skills[type].splice(i, 1);
+  renderSkills(type);
+}
+
+// ── PROJECTS ──
+function renderProjects() {
+  const list = document.getElementById('projects-list');
+  list.innerHTML = '';
+  data.projects.forEach((p, pi) => {
+    const item = document.createElement('div');
+    item.className = 'project-item card';
+    item.innerHTML = `
+      <div class="project-item-header" onclick="toggleProject(${pi})">
+        <div class="project-item-title">
+          <span class="project-emoji">${p.emoji}</span>
+          <span>${p.title}</span>
+          <span style="color:var(--muted);font-size:0.65rem;">${p.category}</span>
+        </div>
+        <span class="project-item-toggle" id="toggle-${pi}">▼</span>
+      </div>
+      <div class="project-item-body" id="proj-body-${pi}">
+        <div class="row-3" style="margin-bottom:16px;">
+          <div class="field">
+            <label class="field-label">Emoji</label>
+            <input class="field-input" value="${p.emoji}" onchange="updateProject(${pi},'emoji',this.value)">
+          </div>
+          <div class="field">
+            <label class="field-label">Title</label>
+            <input class="field-input" value="${p.title}" onchange="updateProject(${pi},'title',this.value)">
+          </div>
+          <div class="field">
+            <label class="field-label">Category</label>
+            <input class="field-input" value="${p.category}" onchange="updateProject(${pi},'category',this.value)">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Problem</label>
+          <textarea class="field-textarea" onchange="updateProject(${pi},'problem',this.value)">${p.problem}</textarea>
+        </div>
+        <div class="field">
+          <label class="field-label">Solution</label>
+          <textarea class="field-textarea" onchange="updateProject(${pi},'solution',this.value)">${p.solution}</textarea>
+        </div>
+        <div class="field">
+          <label class="field-label">Tags</label>
+          <div class="tags-editor" id="tags-${pi}"></div>
+          <div class="skill-add-row">
+            <input class="skill-add-input" id="tag-input-${pi}" placeholder="Add tag" onkeydown="if(event.key==='Enter') addTag(${pi})">
+            <button class="skill-add-btn" onclick="addTag(${pi})">+ Add</button>
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label class="field-label">Live URL</label>
+            <input class="field-input" value="${p.live}" onchange="updateProject(${pi},'live',this.value)">
+          </div>
+          <div class="field">
+            <label class="field-label">GitHub URL</label>
+            <input class="field-input" value="${p.github}" onchange="updateProject(${pi},'github',this.value)">
+          </div>
+        </div>
+      </div>`;
+    list.appendChild(item);
+    renderTags(pi);
+  });
+}
+
+function toggleProject(i) {
+  const item = document.getElementById('proj-body-' + i).closest('.project-item');
+  item.classList.toggle('open');
+}
+function updateProject(i, key, val) { data.projects[i][key] = val; }
+function renderTags(pi) {
+  const el = document.getElementById('tags-' + pi);
+  if (!el) return;
+  el.innerHTML = '';
+  data.projects[pi].tags.forEach((t, ti) => {
+    const chip = document.createElement('div');
+    chip.className = 'tag-chip';
+    chip.innerHTML = `${t} <button class="tag-chip-remove" onclick="removeTag(${pi},${ti})">×</button>`;
+    el.appendChild(chip);
+  });
+}
+function addTag(pi) {
+  const input = document.getElementById('tag-input-' + pi);
+  const val = input.value.trim();
+  if (!val) return;
+  data.projects[pi].tags.push(val);
+  input.value = '';
+  renderTags(pi);
+}
+function removeTag(pi, ti) {
+  data.projects[pi].tags.splice(ti, 1);
+  renderTags(pi);
+}
+
+// ── TESTIMONIALS ──
+function renderTestimonials() {
+  const list = document.getElementById('testimonials-list');
+  list.innerHTML = '';
+  if (!data.testimonials) data.testimonials = [];
+
+  data.testimonials.forEach((t, ti) => {
+    const colorMap = { amber: 'var(--amber)', teal: 'var(--teal)', purple: 'var(--purple)' };
+    const bgMap = { amber: 'rgba(232,168,50,0.15)', teal: 'rgba(42,191,179,0.15)', purple: 'rgba(155,127,232,0.15)' };
+    const c = t.color || 'amber';
+    const item = document.createElement('div');
+    item.className = 'testimonial-item card';
+    item.innerHTML = `
+      <div class="testimonial-item-header" onclick="toggleTestimonial(${ti})">
+        <div class="testimonial-item-title">
+          <div class="testimonial-initials" style="background:${bgMap[c] || bgMap.amber};color:${colorMap[c] || colorMap.amber};">${t.initials || '??'}</div>
+          <span>${t.name || 'New Testimonial'}</span>
+          <span style="color:var(--muted);font-size:0.65rem;">${t.title || ''}</span>
+        </div>
+        <span class="testimonial-item-toggle" id="test-toggle-${ti}">▼</span>
+      </div>
+      <div class="testimonial-item-body" id="test-body-${ti}">
+        <div class="field">
+          <label class="field-label">Quote</label>
+          <textarea class="field-textarea" style="min-height:100px;" onchange="updateTestimonial(${ti},'quote',this.value)">${t.quote || ''}</textarea>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label class="field-label">Name</label>
+            <input class="field-input" value="${t.name || ''}" onchange="updateTestimonial(${ti},'name',this.value)">
+          </div>
+          <div class="field">
+            <label class="field-label">Initials</label>
+            <input class="field-input" value="${t.initials || ''}" onchange="updateTestimonial(${ti},'initials',this.value)" maxlength="3" style="max-width:100px;">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Title / Role</label>
+          <input class="field-input" value="${t.title || ''}" onchange="updateTestimonial(${ti},'title',this.value)">
+        </div>
+        <div class="field">
+          <label class="field-label">LinkedIn URL</label>
+          <input class="field-input" value="${t.linkedin || '#'}" onchange="updateTestimonial(${ti},'linkedin',this.value)">
+        </div>
+        <div class="field">
+          <label class="field-label">Accent Color</label>
+          <div class="color-options">
+            <div class="color-option ${c==='amber'?'selected':''}" data-color="amber" onclick="updateTestimonialColor(${ti},'amber',this)"></div>
+            <div class="color-option ${c==='teal'?'selected':''}" data-color="teal" onclick="updateTestimonialColor(${ti},'teal',this)"></div>
+            <div class="color-option ${c==='purple'?'selected':''}" data-color="purple" onclick="updateTestimonialColor(${ti},'purple',this)"></div>
+          </div>
+        </div>
+        <button class="remove-btn" onclick="removeTestimonial(${ti})">✕ Remove This Testimonial</button>
+      </div>`;
+    list.appendChild(item);
+  });
+}
+
+function toggleTestimonial(i) {
+  const item = document.getElementById('test-body-' + i).closest('.testimonial-item');
+  item.classList.toggle('open');
+}
+function updateTestimonial(i, key, val) {
+  data.testimonials[i][key] = val;
+}
+function updateTestimonialColor(i, color, el) {
+  data.testimonials[i].color = color;
+  // Update UI
+  el.closest('.color-options').querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function addTestimonial() {
+  data.testimonials.push({
+    quote: '',
+    name: '',
+    title: '',
+    initials: '',
+    color: 'amber',
+    linkedin: '#'
+  });
+  renderTestimonials();
+  // Open the new one
+  const idx = data.testimonials.length - 1;
+  setTimeout(() => {
+    const item = document.getElementById('test-body-' + idx);
+    if (item) item.closest('.testimonial-item').classList.add('open');
+  }, 50);
+}
+function removeTestimonial(i) {
+  if (confirm('Remove this testimonial?')) {
+    data.testimonials.splice(i, 1);
+    renderTestimonials();
+  }
+}
+
+// ── INIT ──
+function initAll() {
+  // Hero
+  document.getElementById('hero-name').value = data.hero.name;
+  document.getElementById('hero-title').value = data.hero.title;
+  document.getElementById('hero-typed').value = data.hero.typed;
+  document.getElementById('hero-available').checked = data.hero.available;
+  document.getElementById('hero-meta').value = data.hero.meta;
+
+  // About
+  document.getElementById('about-bio').value = data.about.bio;
+  document.getElementById('about-location').value = data.about.location;
+  document.getElementById('about-status').value = data.about.status;
+  document.getElementById('edu-degree').value = data.about.eduDegree;
+  document.getElementById('edu-years').value = data.about.eduYears;
+  document.getElementById('edu-institute').value = data.about.eduInstitute || '';
+
+  // Skills
+  renderSkills('tech');
+  renderSkills('soft');
+
+  // Projects
+  renderProjects();
+
+  // Testimonials
+  renderTestimonials();
+
+  // Contact
+  document.getElementById('contact-email').value = data.contact.email;
+  document.getElementById('contact-wa').value = data.contact.wa;
+  document.getElementById('contact-sub').value = data.contact.sub;
+  document.getElementById('social-github').value = data.contact.github;
+  document.getElementById('social-linkedin').value = data.contact.linkedin;
+  document.getElementById('social-twitter').value = data.contact.twitter || '';
+  document.getElementById('social-instagram').value = data.contact.instagram || '';
+  document.getElementById('meta-url').value = data.contact.metaUrl;
+  document.getElementById('meta-twitter').value = data.contact.metaTwitter;
+  document.getElementById('meta-keywords').value = data.contact.metaKeywords;
+}
+
+// ── TOAST ──
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg || '✓ Changes saved successfully';
+  t.className = isError ? 'show error' : '';
+  t.classList.add('show');
+  if (isError) t.classList.add('error');
+  setTimeout(() => { t.classList.remove('show'); t.classList.remove('error'); }, 3500);
+}
+</script>
+</body>
+</html>

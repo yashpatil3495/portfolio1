@@ -1,0 +1,9 @@
+{
+  "name": "yash-patil-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Yash Patil — Frontend Developer Portfolio with Netlify Blobs backend",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

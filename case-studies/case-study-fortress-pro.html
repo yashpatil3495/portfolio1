@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortress Pro — Case Study | Yash Patil</title>
+<meta name="description" content="Case study: Fortress Pro — cryptographically secure password generator by Yash Patil.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fortress Pro — Case Study | Yash Patil">
+<meta property="og:description" content="Case study: Fortress Pro — cryptographically secure password generator by Yash Patil.">
+<meta property="og:url" content="https://yashpatil3495.github.io/case-studies/case-study-fortress-pro.html">
+<meta property="og:image" content="https://yashpatil3495.github.io/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fortress Pro — Case Study | Yash Patil">
+<meta name="twitter:description" content="Case study: Fortress Pro — cryptographically secure password generator by Yash Patil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230c0a06'/><text y='72' x='50' text-anchor='middle' font-size='58' font-family='serif' font-weight='bold' fill='%23e8a832'>Y</text></svg>">
+<link rel="stylesheet" href="../css/case-study-fortress-pro.css">
+</head>
+<body>
+<div id="read-progress"></div>
+<nav>
+  <a href="../index.html" class="nav-logo">YP<span>← Portfolio</span></a>
+  <div class="nav-right">
+    <a href="../index.html#work" class="nav-back">All Projects</a>
+    <a href="https://yashpatil3495.github.io/Fortress-Pro/" target="_blank" rel="noopener" class="nav-live">Live Demo ↗</a>
+  </div>
+</nav>
+<section class="cs-hero">
+  <canvas class="hero-bg-canvas" id="hero-canvas"></canvas>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-meta"><span class="section-num">03 / SECURITY</span> Case Study</div>
+    <span class="hero-emoji">🔐</span>
+    <h1 class="hero-title">FORTRESS<br><span>PRO</span></h1>
+    <p class="hero-subtitle">A cryptographically secure password generator with real-time entropy feedback — built entirely in the browser.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">Web Crypto API</span><span class="hero-tag">Entropy Engine</span><span class="hero-tag">Session History</span><span class="hero-tag">Security UX</span>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+<main class="cs-content">
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">01</span> The Problem</div>
+    <h2>WEAK PASSWORDS EVERYWHERE</h2>
+    <div class="problem-block">
+      <div class="block-label">Core Problem</div>
+      <p>Over 80% of data breaches involve compromised or weak passwords. Most password generators are either too simple (just random ASCII), too opaque (no feedback on strength), or rely on Math.random() — which is cryptographically insecure.</p>
+    </div>
+    <p>The goal was to build something that was <strong>genuinely cryptographically secure</strong> — using the browser's actual CSPRNG — while also being <em>legible</em> to non-technical users through real-time entropy visualization.</p>
+    <p>Security tools often have terrible UX because their designers assume users don't care about aesthetics. Fortress Pro was an experiment in proving that wrong.</p>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">02</span> Research & Discovery</div>
+    <h2>THE SECURITY-UX GAP</h2>
+    <p>I studied the cryptography behind password security — specifically <strong>Shannon entropy</strong> (measured in bits), the difference between CSPRNG and PRNG, and how password cracking tools like Hashcat approach brute-force attacks.</p>
+    <div class="insight-grid">
+      <div class="insight-card"><span class="insight-icon">🔒</span><div class="insight-title">CSPRNG vs PRNG</div><div class="insight-text">Math.random() is predictable with enough samples. crypto.getRandomValues() uses OS-level entropy — genuinely random.</div></div>
+      <div class="insight-card"><span class="insight-icon">📊</span><div class="insight-title">Entropy Bits</div><div class="insight-text">A 12-char password from a 72-char set has ~74 bits of entropy — considered strong for 2025 threat models.</div></div>
+      <div class="insight-card"><span class="insight-icon">⏱</span><div class="insight-title">Crack Time</div><div class="insight-text">Translating entropy into "time to crack" makes security tangible. "128-bit entropy" means nothing. "2.3 trillion years" means something.</div></div>
+      <div class="insight-card"><span class="insight-icon">🧩</span><div class="insight-title">Character Sets</div><div class="insight-text">Letting users customize character inclusion/exclusion gives them control without compromising the underlying randomness source.</div></div>
+    </div>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">03</span> Design Decisions</div>
+    <h2>SECURITY MADE LEGIBLE</h2>
+    <div class="decision-list">
+      <div class="decision-item">
+        <div class="decision-num">01</div>
+        <div>
+          <div class="decision-title">WEB CRYPTO API EXCLUSIVELY</div>
+          <p class="decision-text">Every password is generated using crypto.getRandomValues() — the browser's CSPRNG. I explicitly avoided Math.random(). This is non-negotiable for a security tool and was the first architectural decision made before any UI work.</p>
+          <span class="decision-tag">Security Architecture</span>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">02</div>
+        <div>
+          <div class="decision-title">REAL-TIME ENTROPY METER</div>
+          <p class="decision-text">As the user adjusts length and character sets, a live entropy meter updates in bits with a corresponding "crack time estimate" (e.g., "centuries at 10B guesses/sec"). This teaches users about security without lecturing them.</p>
+          <span class="decision-tag">Data Visualization</span>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">03</div>
+        <div>
+          <div class="decision-title">SESSION HISTORY SYSTEM</div>
+          <p class="decision-text">Generated passwords are stored in a session history (in-memory, not persisted) so users can compare and go back to a previous one. The history clears on page refresh — intentional ephemeral design for a security context.</p>
+          <span class="decision-tag">UX Pattern</span>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">04</div>
+        <div>
+          <div class="decision-title">ZERO NETWORK REQUESTS</div>
+          <p class="decision-text">Fortress Pro makes zero outbound requests. No analytics, no API calls, no logging. The password never leaves the browser. This is the only appropriate architecture for a security tool — and a key part of the user trust proposition.</p>
+          <span class="decision-tag">Privacy by Design</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">04</span> Technical Stack</div>
+    <h2>ZERO DEPENDENCIES</h2>
+    <div class="tech-grid">
+      <span class="tech-pill">Web Crypto API</span><span class="tech-pill">HTML5</span><span class="tech-pill">CSS Variables</span><span class="tech-pill">Vanilla JS</span><span class="tech-pill">Shannon Entropy Math</span><span class="tech-pill">CSS Animations</span>
+    </div>
+    <p>The entropy calculation is done client-side: <code style="font-family:var(--font-mono);color:var(--rust);font-size:0.9em;">H = L × log₂(N)</code> where L is password length and N is the character set size. The "crack time" estimate assumes 10 billion guesses per second, consistent with modern GPU-accelerated hashcat benchmarks.</p>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">05</span> Outcome</div>
+    <h2>PRIVACY-FIRST, SHIPPED</h2>
+    <div class="metrics-grid">
+      <div class="metric-cell"><div class="metric-val">0</div><div class="metric-label">Network Requests</div></div>
+      <div class="metric-cell"><div class="metric-val">128+</div><div class="metric-label">Max Entropy Bits</div></div>
+      <div class="metric-cell"><div class="metric-val">100%</div><div class="metric-label">CSPRNG-Based</div></div>
+      <div class="metric-cell"><div class="metric-val">0</div><div class="metric-label">External Dependencies</div></div>
+    </div>
+    <div class="cs-quote">
+      <blockquote>"I wanted the strength meter to make users feel the weight of the number — not just see a percentage bar go green. Showing 'crack time: 400 trillion years' at 20 characters is more visceral than any color could be."</blockquote>
+      <cite>— Yash Patil, on the entropy UX</cite>
+    </div>
+  </section>
+  <section class="cs-section" data-reveal>
+    <div class="section-eyebrow"><span class="section-num">06</span> What I Learned</div>
+    <h2>LESSONS CARRIED FORWARD</h2>
+    <div class="lesson-list">
+      <div class="lesson-item"><span class="lesson-bullet">✦</span><span class="lesson-text"><strong>Security and UX aren't opposites.</strong> The best security tools make the right choice the easy choice. Good UI doesn't compromise security — it amplifies it.</span></div>
+      <div class="lesson-item"><span class="lesson-bullet">✦</span><span class="lesson-text"><strong>Teach, don't tell.</strong> Showing "74 bits of entropy (strong)" educates users about why length matters without ever mentioning cryptography jargon.</span></div>
+      <div class="lesson-item"><span class="lesson-bullet">✦</span><span class="lesson-text"><strong>Privacy by default is a feature.</strong> "Zero network requests" became a selling point, not just an implementation detail. Users feel safer when they understand the architecture.</span></div>
+    </div>
+  </section>
+  <div class="cs-cta cs-section" data-reveal>
+    <h3>GENERATE A SECURE PASSWORD</h3>
+    <p>Try Fortress Pro — no account, no tracking, no data ever leaves your browser.</p>
+    <div class="cta-buttons">
+      <a href="https://yashpatil3495.github.io/Fortress-Pro/" target="_blank" rel="noopener" class="btn-cta primary">Open Live Demo ↗</a>
+      <a href="https://github.com/yashpatil3495/Fortress-Pro" target="_blank" rel="noopener" class="btn-cta ghost">View Source Code</a>
+    </div>
+  </div>
+  <div class="cs-nav cs-section" data-reveal>
+    <a href="case-study-linguavox.html">← LinguaVox</a>
+    <div class="cs-nav-next">
+      <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Next Case Study</div>
+      <a href="case-study-cipherpixel.html">CipherPixel →</a>
+    </div>
+  </div>
+</main>
+<script src="../js/case-study-fortress-pro.js"></script>
+</body>
+</html>

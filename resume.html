@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yash Patil — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/resume.css">
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<nav class="toolbar">
+  <div class="toolbar-left">
+    <a href="index.html" class="toolbar-brand">YP<span>← Back to Portfolio</span></a>
+
+  </div>
+  <div class="toolbar-right">
+
+    <button class="btn-pdf-gen" id="btn-pdf" onclick="generatePDF()">⬇ Download PDF</button>
+    <button class="btn-toolbar primary" onclick="window.print()">⎙ Print</button>
+  </div>
+</nav>
+
+<!-- RESUME -->
+<div class="resume-wrap" id="resume-content">
+
+  <!-- HEADER -->
+  <header class="resume-header">
+    <div>
+      <div class="resume-name">YASH<br><span>PATIL</span><span style="color:var(--teal);">.</span></div>
+      <div class="resume-role" id="resume-role">Frontend Developer &amp; UI/UX Designer</div>
+      <div class="contact-row">
+        <a href="mailto:yashpatil3495@gmail.com" class="contact-item">
+          <span class="contact-dot">◆</span> yashpatil3495@gmail.com
+        </a>
+        <a href="tel:+917741010554" class="contact-item">
+          <span class="contact-dot">◆</span> +91 7741010554
+        </a>
+        <a href="https://github.com/yashpatil3495" target="_blank" class="contact-item">
+          <span class="contact-dot">◆</span> github.com/yashpatil3495
+        </a>
+        <a href="https://www.linkedin.com/in/yash-patil-b30b18363" target="_blank" class="contact-item">
+          <span class="contact-dot">◆</span> LinkedIn
+        </a>
+        <span class="contact-item">
+          <span class="contact-dot">◆</span> Pune, India
+        </span>
+      </div>
+    </div>
+    <div id="avatar-wrap">
+      <img src="assets/yash-patil.png" alt="Yash Patil" class="resume-avatar-img" style="width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid rgba(232,168,50,0.4);display:block;">
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section class="resume-section">
+    <div class="section-header">
+      <div class="section-title-text">ABOUT</div>
+      <div class="section-line"></div>
+      <div class="section-source">portfolio</div>
+    </div>
+    <p class="about-text-resume" id="about-text">
+      I'm Yash Patil — a frontend developer and UI/UX designer based in Pune, India. I craft digital experiences that are fast, beautiful, and purposeful. With a focus on modern web technologies and AI-powered tools, I bring ideas from concept to deployment with creative precision.
+    </p>
+  </section>
+
+  <!-- PROJECTS (from portfolio) -->
+  <section class="resume-section">
+    <div class="section-header">
+      <div class="section-title-text">FEATURED PROJECTS</div>
+      <div class="section-line"></div>
+      <div class="section-source">portfolio</div>
+    </div>
+    <div class="projects-grid" id="projects-grid">
+
+      <div class="project-row">
+        <div>
+          <div class="project-title-row">
+            <div class="project-name">FOCUS FLOW</div>
+            <div class="project-cat">Productivity</div>
+          </div>
+          <div class="project-desc">Gamified productivity dashboard with Pomodoro timer, drag-and-drop task management, Spotify integration, real-time analytics and streak tracking.</div>
+          <div class="project-tags">
+            <span class="tag">Spotify Embed</span><span class="tag">Goal Tracking</span><span class="tag">Task Management</span><span class="tag">Data Viz</span>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://yashpatil3495.github.io/timer/" target="_blank" class="project-link">Live ↗</a>
+          <a href="https://github.com/yashpatil3495/timer" target="_blank" class="project-link">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="project-row">
+        <div>
+          <div class="project-title-row">
+            <div class="project-name">LINGUAVOX</div>
+            <div class="project-cat">Language</div>
+          </div>
+          <div class="project-desc">Mobile-first real-time translation app with voice input via Web Speech API, text-to-speech synthesis, multi-language support and speed control.</div>
+          <div class="project-tags">
+            <span class="tag">Web Speech API</span><span class="tag">TTS Synthesis</span><span class="tag">Fetch API</span><span class="tag">Voice Match</span>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://yashpatil3495.github.io/LinguaVox2/" target="_blank" class="project-link">Live ↗</a>
+          <a href="https://github.com/yashpatil3495/my-portfolio2" target="_blank" class="project-link">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="project-row">
+        <div>
+          <div class="project-title-row">
+            <div class="project-name">FORTRESS PRO</div>
+            <div class="project-cat">Security</div>
+          </div>
+          <div class="project-desc">Cryptographically secure password generator using the Web Crypto API with real-time entropy estimation and session history tracking.</div>
+          <div class="project-tags">
+            <span class="tag">Crypto API</span><span class="tag">Entropy Engine</span><span class="tag">Session History</span>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://yashpatil3495.github.io/Fortress-Pro/" target="_blank" class="project-link">Live ↗</a>
+          <a href="https://github.com/yashpatil3495/Fortress-Pro" target="_blank" class="project-link">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="project-row">
+        <div>
+          <div class="project-title-row">
+            <div class="project-name">CIPHERPIXEL</div>
+            <div class="project-cat">Creative</div>
+          </div>
+          <div class="project-desc">Pixel-level steganography tool using the Canvas API to encode and decode hidden text inside image files. Drag-and-drop interface.</div>
+          <div class="project-tags">
+            <span class="tag">Canvas API</span><span class="tag">Steganography</span><span class="tag">File API</span>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://yashpatil3495.github.io/CipherPixel/" target="_blank" class="project-link">Live ↗</a>
+          <a href="https://github.com/yashpatil3495/CipherPixel" target="_blank" class="project-link">Code ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="resume-section">
+    <div class="section-header">
+      <div class="section-title-text">SKILLS</div>
+      <div class="section-line"></div>
+      <div class="section-source">portfolio</div>
+    </div>
+    <div class="skills-grid">
+      <div>
+        <div class="skill-group-title">Frontend</div>
+        <div class="skill-pills">
+          <span class="skill-pill">HTML5</span><span class="skill-pill">CSS3</span><span class="skill-pill">JavaScript</span><span class="skill-pill">React</span><span class="skill-pill">Responsive UI</span>
+        </div>
+      </div>
+      <div>
+        <div class="skill-group-title">Creative Dev</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Three.js</span><span class="skill-pill">Canvas API</span><span class="skill-pill">WebGL</span><span class="skill-pill">GSAP</span>
+        </div>
+      </div>
+      <div>
+        <div class="skill-group-title">AI / Tools</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Prompt Engineering</span><span class="skill-pill">LLM Integration</span><span class="skill-pill">Python</span>
+        </div>
+      </div>
+      <div>
+        <div class="skill-group-title">Design</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Figma</span><span class="skill-pill">UI/UX</span><span class="skill-pill">Typography</span>
+        </div>
+      </div>
+      <div>
+        <div class="skill-group-title">Currently Learning</div>
+        <div class="skill-pills">
+          <span class="skill-pill" style="border-color:rgba(42,191,179,0.4);color:var(--teal);">React</span>
+          <span class="skill-pill" style="border-color:rgba(42,191,179,0.4);color:var(--teal);">TypeScript</span>
+        </div>
+      </div>
+      <div>
+        <div class="skill-group-title">Languages</div>
+        <div class="skill-pills" id="gh-languages">
+          <span class="skill-pill">C</span><span class="skill-pill">C++</span><span class="skill-pill">Java</span><span class="skill-pill">Python</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION & EXPERIENCE -->
+  <section class="resume-section">
+    <div class="section-header">
+      <div class="section-title-text">EDUCATION &amp; EXPERIENCE</div>
+      <div class="section-line"></div>
+      <div class="section-source">portfolio</div>
+    </div>
+    <div class="timeline-list">
+      <div class="tl-item">
+        <div class="tl-date">2025 — Present</div>
+        <div class="tl-body">
+          <div class="tl-title">Bachelor of Computer Engineering</div>
+          <div class="tl-sub">Pune, India</div>
+          <div class="tl-desc">Focused on web development, programming fundamentals, data structures and UI/UX design. Applying academic knowledge through real-world shipped projects.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2025 — Present</div>
+        <div class="tl-body">
+          <div class="tl-title">Frontend Developer — Self-Led Projects</div>
+          <div class="tl-sub">Independent</div>
+          <div class="tl-desc">Built and shipped 4+ live web applications — productivity tools, language apps, security utilities and creative dev experiments.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="resume-footer">
+    <div>Yash Patil — <a href="index.html">Portfolio</a> · <a href="https://github.com/yashpatil3495" target="_blank">GitHub</a> · <a href="https://www.linkedin.com/in/yash-patil-b30b18363" target="_blank">LinkedIn</a></div>
+  </footer>
+
+</div><!-- /.resume-wrap -->
+
+<script src="js/resume.js"></script>
+
+<div class="resume-toast" id="resume-toast">✓ Copied to clipboard</div>
+<button id="resume-scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">↑</button>
+
+</body>
+</html>
